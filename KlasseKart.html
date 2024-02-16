@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Shuffler</title>
+  <style>
+    canvas {
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas" width="500" height="500"></canvas>
+
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    const font = '20px Arial bold';
+
+    const students = ['Ari', 'Aël', 'Adrian', 'Brage', 'Carl', 'Frida', 'Jens', 'Johs', 'Kaja', 'Lars', 'Lucas', 'Oscar', 'Oskar', 'Roe', 'Sander', 'Sara', 'Steinar', 'Tiril', 'Yazan'];
+    const orderX = [2, 3, 5, 6, 0, 1, 3, 4, 6, 7, 0, 1, 3, 4, 6, 7, 3, 4, 5];
+    const orderY = [0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 6, 6, 6];
+    const color = '#000';
+
+    function shuffleStudents() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let amount = 0;
+      students.sort(() => Math.random() - 0.5);
+
+      students.forEach((student, index) => {
+        ctx.beginPath();
+        ctx.rect(30 * orderX[amount] * 2, 30 * orderY[amount] * 2, 60, 60);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+
+        ctx.font = font;
+        ctx.fillStyle = color;
+
+        // Center the text horizontally and vertically within the rectangle
+        const textWidth = ctx.measureText(student).width;
+        const x = 30 * orderX[amount] * 2 + (60 - textWidth) / 2;
+        const y = 30 * orderY[amount] * 2 + 30 + 5; // Adjusted vertical position
+
+        ctx.textAlign = 'left'; // Reset text alignment for next iteration
+        ctx.fillText(student, x, y);
+
+        amount++;
+      });
+    }
+
+    shuffleStudents();
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'a') {
+        shuffleStudents();
+      }
+    });
+  </script>
+</body>
+</html>
